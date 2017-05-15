@@ -46,9 +46,9 @@ Current user-defined commands:
 
 Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
 
-`(lldb) iob + [Tab] + [Enter]`
+`(lldb) io + [Tab] + [Enter]`
 
-or if just only one command with prefix `iob`:
+or if just only one command with prefix `io`:
 
-`(lldb) iob + [Enter]`
+`(lldb) io + [Enter]`
 
