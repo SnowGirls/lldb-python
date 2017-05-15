@@ -65,7 +65,6 @@ def iraddress(debugger, command, result, internal_dict):
 
 
 	ASLR = iaslr(debugger, module, result, internal_dict)
-	print address
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('p/x %s+%s' % (address, ASLR), returnObject)
 	output = returnObject.GetOutput()
