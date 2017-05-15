@@ -126,11 +126,11 @@ def __lldb_init_module(debugger, dict):
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'iraddress'
-	helpText = "Get specified module address that plus ASLR."
+	helpText = "Get specified module address that plus ASLR. r for runtime"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ifaddress'
-	helpText = "Get specified module address that minus ASLR."
+	helpText = "Get specified module address that minus ASLR. f for fixed"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command

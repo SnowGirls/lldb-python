@@ -22,10 +22,10 @@ Current user-defined commands:
   iaslr                 -- Print specified module's ASLR.
   ibreak                -- Set specified module breakpoint that plus ASLR.
   ievaluate_instruction -- Evaluate current instruction.
-  ifaddress             -- Get specified module address that minus ASLR.
+  ifaddress             -- Get specified module address that minus ASLR. f for fixed
   iobjc_msgSend         -- Break at / Step to next objc_msgSend.
   iprint_arguments      -- Print current objc_msgSend arguments.
-  iraddress             -- Get specified module address that plus ASLR.
+  iraddress             -- Get specified module address that plus ASLR. r for runtime
   ishow_disassemble     -- Show current disassemble instructions.
 ```
 
