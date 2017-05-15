@@ -28,7 +28,11 @@ Current user-defined commands:
   ishow_disassemble     -- Show current disassemble instructions.
 ```
 
+`(lldb) process interrupt`
+
 `(lldb) iaslr`
+
+`(lldb) iaslr UIKit`
 
 `(lldb) iobjc_msgSend`
 
