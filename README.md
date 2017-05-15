@@ -10,7 +10,7 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 
 `command script import ~/Path/To/objc_msgSend.py`
 
-Also, you can put these command above into the file `~/.lldbinit` .
+Also, you can put these command above into the file `~/.lldbinit` 
 
 
 #### 2. Use the imported Debugger commands
@@ -19,13 +19,13 @@ Also, you can put these command above into the file `~/.lldbinit` .
 
 ```
 Current user-defined commands:
-  iaslr                 -- Print specified module ASLR.
-  ibreak                -- Set specified module breakpoint plus ASLR.
+  iaslr                 -- Print specified module's ASLR.
+  ibreak                -- Set specified module breakpoint that plus ASLR.
   ievaluate_instruction -- Evaluate current instruction.
-  ifaddress             -- Get specified module breakpoint minus ASLR.
-  iobjc_msgSend         -- Break at next objc_msgSend.
+  ifaddress             -- Get specified module address that minus ASLR.
+  iobjc_msgSend         -- Break at / Step to next objc_msgSend.
   iprint_arguments      -- Print current objc_msgSend arguments.
-  iraddress             -- Get specified module breakpoint minus ASLR.
+  iraddress             -- Get specified module address that plus ASLR.
   ishow_disassemble     -- Show current disassemble instructions.
 ```
 

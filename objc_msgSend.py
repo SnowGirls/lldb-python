@@ -109,7 +109,7 @@ def __lldb_init_module(debugger, dict):
 
 	command = 'iobjc_msgSend'
 	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
-	helpText = "Break at next objc_msgSend."
+	helpText = "Break at / Step to next objc_msgSend."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
