@@ -6,7 +6,7 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 
 #### 1. Import the scripts
 
-`command script import ~/Path/To/objc_msgSend.py`
+`command script import ~/Path/To/breakpoint.py`
 
 `command script import ~/Path/To/objc_msgSend.py`
 
