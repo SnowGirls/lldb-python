@@ -34,6 +34,8 @@ Current user-defined commands:
 
 `(lldb) iaslr UIKit`
 
+`(lldb) ibreak 0x00000001014479F4 WeChat`		// 00000001014479F4 Copied from IDA
+
 `(lldb) iobjc_msgSend`
 
 `(lldb) ishow_disassemble`
