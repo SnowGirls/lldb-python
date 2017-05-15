@@ -33,7 +33,7 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 		m = p.search(disassemble)
 		c = m.group(0)
 
-		if any(re.findall(r'objc_release|objc_retainAutoreleasedReturnValue', c, re.IGNORECASE)):
+		if any(re.findall(r'objc_release|objc_retainAutorelease', c, re.IGNORECASE)):
 			thread.StepOver()
 
 		elif any(re.findall(r'\sbl\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\scmp\s', c, re.IGNORECASE)):
