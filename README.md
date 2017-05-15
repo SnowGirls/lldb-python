@@ -12,6 +12,7 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 
 Also, you can put these command above into the file `~/.lldbinit` .
 
+
 #### 2. Use the imported Debugger commands
 
 `(lldb) help`
@@ -39,3 +40,15 @@ Current user-defined commands:
 `(lldb) iobjc_msgSend`
 
 `(lldb) ishow_disassemble`
+
+
+#### 3. Tips
+
+Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
+
+`(lldb) iob + [Tab] + [Enter]`
+
+or if just only one command with prefix `iob`:
+
+`(lldb) iob + [Enter]`
+
