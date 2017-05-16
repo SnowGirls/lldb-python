@@ -116,21 +116,23 @@ def get_GPRs(frame):
 
 def __lldb_init_module(debugger, dict):
 	command = 'iaslr'
-	helpText = "Print specified module's ASLR."
+	helpText = "Print specified module's ASLR. iaslr [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ibreak'
-	helpText = "Set specified module breakpoint that plus ASLR."
+	helpText = "Set specified module breakpoint that plus ASLR. ibreak [address] [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'iraddress'
-	helpText = "Get specified module address that plus ASLR. r for runtime"
+	helpText = "Translate specified module runtime address that plus ASLR. iraddress {address} [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ifaddress'
-	helpText = "Get specified module address that minus ASLR. f for fixed"
+	helpText = "Translate specified module fixed address that minus ASLR. ifaddress [address] [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
+
+

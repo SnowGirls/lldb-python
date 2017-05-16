@@ -7,19 +7,6 @@ import lldb
 import re
 import os
 
-def ishow_disassemble(debugger, command, result, internal_dict):
-	args = shlex.split(command)
-	count = 20
-	if len(args) > 0:
-		count = args[0]
-
-	interpreter = lldb.debugger.GetCommandInterpreter()
-	returnObject = lldb.SBCommandReturnObject()
-	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
-	output = returnObject.GetOutput();
-	error = returnObject.GetError()
-	print output + '' + error
-
 
 def iobjc_msgSend(debugger, command, result, internal_dict):
 	interpreter = lldb.debugger.GetCommandInterpreter()
@@ -45,6 +32,21 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			thread.StepOver()
 
 	iprint_arguments(debugger, command, result, internal_dict)
+
+
+def ishow_disassemble(debugger, command, result, internal_dict):
+	args = shlex.split(command)
+	count = 20
+	if len(args) > 0:
+		count = args[0]
+
+	interpreter = lldb.debugger.GetCommandInterpreter()
+	returnObject = lldb.SBCommandReturnObject()
+	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
+	output = returnObject.GetOutput();
+	error = returnObject.GetError()
+	print output + '' + error
+
 
 def ievaluate_instruction(debugger, command, result, internal_dict):
 	per_instruction_len = 0x4
@@ -101,15 +103,15 @@ def __lldb_init_module(debugger, dict):
 	basename = os.path.basename(filePath)
 	filename = os.path.splitext(basename)[0]
 
-	command = 'ishow_disassemble'
-	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
-	helpText = "Show current disassemble instructions."
-	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
-
 	command = 'iobjc_msgSend'
 	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
 	helpText = "Break at / Step to next objc_msgSend."
+	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
+	print 'The "%s" python command has been installed and is ready for use.' % command
+
+	command = 'ishow_disassemble'
+	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
+	helpText = "Print current disassemble instructions."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 

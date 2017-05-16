@@ -19,14 +19,14 @@ Also, you can put these command above into the file `~/.lldbinit`
 
 ```
 Current user-defined commands:
-  iaslr                 -- Print specified module's ASLR.
-  ibreak                -- Set specified module breakpoint that plus ASLR.
+  iaslr                 -- Print specified module's ASLR. iaslr [module]
+  ibreak                -- Set specified module breakpoint that plus ASLR. ibreak [address] [module]
   ievaluate_instruction -- Evaluate current instruction.
-  ifaddress             -- Get specified module address that minus ASLR. f for fixed
+  ifaddress             -- Translate specified module fixed address that minus ASLR. ifaddress [address] [module]
   iobjc_msgSend         -- Break at / Step to next objc_msgSend.
   iprint_arguments      -- Print current objc_msgSend arguments.
-  iraddress             -- Get specified module address that plus ASLR. r for runtime
-  ishow_disassemble     -- Show current disassemble instructions.
+  iraddress             -- Translate specified module runtime address that plus ASLR. iraddress {address} [module]
+  ishow_disassemble     -- Print current disassemble instructions.
 ```
 
 `(lldb) process interrupt`
