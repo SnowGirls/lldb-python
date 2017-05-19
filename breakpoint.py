@@ -121,7 +121,7 @@ def __lldb_init_module(debugger, dict):
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ibreak'
-	helpText = "Set specified module breakpoint that plus ASLR. ibreak [address] [module]"
+	helpText = "Set specified module breakpoint that plus ASLR. ibreak {address} [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
