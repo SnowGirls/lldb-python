@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding:utf-8
 
 import commands
 import optparse
@@ -75,23 +76,27 @@ def iprint_arguments(debugger, command, result, internal_dict):
 	interpreter.HandleCommand('p (char *)$x1', returnObject)
 	arg2 = returnObject.GetOutput().strip()
 
-	print '-[%s %s]' % (arg1, arg2)
+	print '[%s %s]' % (arg1, arg2)
 
 	functionName = '['
 	functionName += '%s ' % arg1
 	p = re.compile('"(.*)"')
 	m = p.search(arg2)
 	if m is not None:
-		s = m.group(1)
-		names = s.split(':')
+		selectors = m.group(1)
+		names = selectors.split(':')
 		if len(names) > 1:
 			for i in range(len(names) - 1):
 				interpreter.HandleCommand('po $x%d' % (i + 2), returnObject)
 				value = returnObject.GetOutput().strip()
 				name = names[i]
-				functionName += ' %s:%s ' % (name, value)
+				key = name.replace("ffffff", "")
+				key = key.decode('string-escape')
+				functionName += ' %s:%s ' % (key, value)
 		else:
-			functionName += s
+			key = selectors.replace("ffffff", "")
+			key = key.decode('string-escape')
+			functionName += key
 	
 
 	functionName += ']'
