@@ -13,7 +13,8 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 	interpreter = lldb.debugger.GetCommandInterpreter()
 	returnObject = lldb.SBCommandReturnObject()
 	thread = debugger.GetSelectedTarget().GetProcess().GetSelectedThread()
-	thread.StepOver()
+	#thread.StepOver()
+	thread.StepInstruction(True)
 	while True:
 		interpreter.HandleCommand('dis -p -c 10', returnObject)
 		disassemble = returnObject.GetOutput();
@@ -22,7 +23,8 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 		c = m.group(0)
 
 		if any(re.findall(r'objc_release|objc_retainAutorelease', c, re.IGNORECASE)):
-			thread.StepOver()
+			#thread.StepOver()
+			thread.StepInstruction(True)
 
 		elif any(re.findall(r'\sbl\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\scmp\s', c, re.IGNORECASE)):
 			print 'objc_msgSend Hited!'
@@ -30,9 +32,10 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			break
 
 		else:
-			thread.StepOver()
+			#thread.StepOver()
+			thread.StepInstruction(True)
 
-	iprint_arguments(debugger, command, result, internal_dict)
+	iarguments(debugger, command, result, internal_dict)
 
 
 def ishow_disassemble(debugger, command, result, internal_dict):
@@ -65,23 +68,24 @@ def ievaluate_instruction(debugger, command, result, internal_dict):
 
 	interpreter.HandleCommand('po $x0', returnObject)
 	ret = returnObject.GetOutput().strip()
+	iunicode(debugger, '$x0', result, internal_dict)
 	print 'Instruction Return Value : %s' % ret
 
 
-def iprint_arguments(debugger, command, result, internal_dict):
+def iarguments(debugger, command, result, internal_dict):
 	interpreter = lldb.debugger.GetCommandInterpreter()
 	returnObject = lldb.SBCommandReturnObject()
 	interpreter.HandleCommand('po $x0', returnObject)
-	arg1 = returnObject.GetOutput().strip()
+	object_name = returnObject.GetOutput().strip()
 	interpreter.HandleCommand('p (char *)$x1', returnObject)
-	arg2 = returnObject.GetOutput().strip()
+	method_name = returnObject.GetOutput().strip()
 
-	print '[%s %s]' % (arg1, arg2)
+	print '[%s %s]' % (object_name, method_name)
 
-	functionName = '['
-	functionName += '%s ' % arg1
+	objc_message = '['
+	objc_message += '%s ' % iunicode(debugger, '$x0', result, internal_dict)
 	p = re.compile('"(.*)"')
-	m = p.search(arg2)
+	m = p.search(method_name)
 	if m is not None:
 		selectors = m.group(1)
 		names = selectors.split(':')
@@ -89,18 +93,55 @@ def iprint_arguments(debugger, command, result, internal_dict):
 			for i in range(len(names) - 1):
 				interpreter.HandleCommand('po $x%d' % (i + 2), returnObject)
 				value = returnObject.GetOutput().strip()
-				name = names[i]
-				key = name.replace("ffffff", "")
-				key = key.decode('string-escape')
-				functionName += ' %s:%s ' % (key, value)
+				sel = names[i]
+				#if r"\xffffff" in sel:
+				sel = iunicode(debugger, '"'+sel+'"', result, internal_dict)
+
+				objc_message += '%s:%s ' % (sel, value)
 		else:
-			key = selectors.replace("ffffff", "")
-			key = key.decode('string-escape')
-			functionName += key
+			sel = selectors
+			#if r"\xffffff" in sel:
+			sel = iunicode(debugger, '"'+sel+'"', result, internal_dict)
+				
+			objc_message += sel
 	
 
-	functionName += ']'
-	print functionName
+	objc_message += ']'
+	print objc_message
+
+
+def iunicode(debugger, command, result, internal_dict):
+	args = shlex.split(command)
+	first_parameter = args[0]
+	if r"\xffffff" in first_parameter:		# unicode string
+		unicode_string = first_parameter.replace("ffffff", "")
+		unicode_escaped = unicode_string.decode('string-escape')
+		print unicode_string + ' -> ' + unicode_escaped
+		return unicode_escaped
+
+	elif first_parameter.startswith("0x"):
+		interpreter = lldb.debugger.GetCommandInterpreter()
+		returnObject = lldb.SBCommandReturnObject()
+		meta_class_address = first_parameter
+		interpreter.HandleCommand('p (char *)class_getName((void *)[%s class])' % meta_class_address, returnObject)
+		meta_class_name = returnObject.GetOutput().strip()
+		index_start = meta_class_name.find('"')
+		if index_start >= 0:
+			index_end = meta_class_name.find('"', index_start + 1)
+			unicode_string = meta_class_name[index_start : index_end + 1]
+			return iunicode(debugger, unicode_string, result, internal_dict)
+
+	elif first_parameter.startswith("$x"):
+		interpreter = lldb.debugger.GetCommandInterpreter()
+		returnObject = lldb.SBCommandReturnObject()
+		register = first_parameter
+		interpreter.HandleCommand('p/x %s' % register, returnObject)
+		object_address = returnObject.GetOutput().strip()
+		object_address = object_address.split('=')[-1]
+		return iunicode(debugger, object_address, result, internal_dict)
+
+	return first_parameter
+		
 
 
 def __lldb_init_module(debugger, dict):
@@ -126,9 +167,14 @@ def __lldb_init_module(debugger, dict):
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
-	command = 'iprint_arguments'
+	command = 'iarguments'
 	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
 	helpText = "Print current objc_msgSend arguments."
+	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
+	print 'The "%s" python command has been installed and is ready for use.' % command
+
+	command = 'iunicode'
+	helpText = "Print the unicode encoding string. iunicode address/string"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
