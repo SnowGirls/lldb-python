@@ -26,7 +26,7 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			#thread.StepOver()
 			thread.StepInstruction(True)
 
-		elif any(re.findall(r'\sbl\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\scmp\s', c, re.IGNORECASE)):
+		elif any(re.findall(r'\sbl\s|\sblr\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\stbnz\s|\scmp\s', c, re.IGNORECASE)):
 			print 'objc_msgSend Hited!'
 			print disassemble
 			break
@@ -38,7 +38,7 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 	iarguments(debugger, command, result, internal_dict)
 
 
-def ishow_disassemble(debugger, command, result, internal_dict):
+def idisassemble(debugger, command, result, internal_dict):
 	args = shlex.split(command)
 	count = 20
 	if len(args) > 0:
@@ -52,7 +52,7 @@ def ishow_disassemble(debugger, command, result, internal_dict):
 	print output + '' + error
 
 
-def ievaluate_instruction(debugger, command, result, internal_dict):
+def ievaluate(debugger, command, result, internal_dict):
 	per_instruction_len = 0x4
 	show_instructions_len = 5
 
@@ -94,13 +94,11 @@ def iarguments(debugger, command, result, internal_dict):
 				interpreter.HandleCommand('po $x%d' % (i + 2), returnObject)
 				value = returnObject.GetOutput().strip()
 				sel = names[i]
-				#if r"\xffffff" in sel:
 				sel = iunicode(debugger, '"'+sel+'"', result, internal_dict)
 
 				objc_message += '%s:%s ' % (sel, value)
 		else:
 			sel = selectors
-			#if r"\xffffff" in sel:
 			sel = iunicode(debugger, '"'+sel+'"', result, internal_dict)
 				
 			objc_message += sel
@@ -150,25 +148,21 @@ def __lldb_init_module(debugger, dict):
 	filename = os.path.splitext(basename)[0]
 
 	command = 'iobjc_msgSend'
-	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
 	helpText = "Break at / Step to next objc_msgSend."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
-	command = 'ishow_disassemble'
-	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
+	command = 'idisassemble'
 	helpText = "Print current disassemble instructions."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
-	command = 'ievaluate_instruction'
-	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
+	command = 'ievaluate'
 	helpText = "Evaluate current instruction."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'iarguments'
-	# debugger.HandleCommand('command script add %s -f %s.%s' % (command, filename, command))
 	helpText = "Print current objc_msgSend arguments."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
