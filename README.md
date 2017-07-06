@@ -4,7 +4,7 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 
 ## How to use
 
-#### 1. Import the scripts
+### 1. Import the scripts
 
 `command script import ~/Path/To/breakpoint.py`
 
@@ -13,11 +13,12 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 Also, you can put these command above into the file `~/.lldbinit` 
 
 
-#### 2. Use the imported Debugger commands
+### 2. Commands example
 
-`(lldb) help`
 
 `(lldb) process interrupt`
+
+`(lldb) help`
 
 `(lldb) iaslr`
 
@@ -27,10 +28,10 @@ Also, you can put these command above into the file `~/.lldbinit`
 
 `(lldb) iobjc_msgSend`
 
-`(lldb) ishow_disassemble`
+`(lldb) idisassemble`
 
 
-#### 3. Tips
+### 3. Tips
 
 Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
 

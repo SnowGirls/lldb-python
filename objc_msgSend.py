@@ -117,10 +117,12 @@ def iunicode(debugger, command, result, internal_dict):
 		print unicode_string + ' -> ' + unicode_escaped
 		return unicode_escaped
 
+	## for address
 	elif first_parameter.startswith("0x"):
 		interpreter = lldb.debugger.GetCommandInterpreter()
 		returnObject = lldb.SBCommandReturnObject()
 		meta_class_address = first_parameter
+		## p (char *)class_getName((struct objc_class *)0x00000001047eb440)
 		interpreter.HandleCommand('p (char *)class_getName((void *)[%s class])' % meta_class_address, returnObject)
 		meta_class_name = returnObject.GetOutput().strip()
 		index_start = meta_class_name.find('"')
@@ -129,6 +131,7 @@ def iunicode(debugger, command, result, internal_dict):
 			unicode_string = meta_class_name[index_start : index_end + 1]
 			return iunicode(debugger, unicode_string, result, internal_dict)
 
+	## for class
 	elif first_parameter.startswith("$x"):
 		interpreter = lldb.debugger.GetCommandInterpreter()
 		returnObject = lldb.SBCommandReturnObject()
@@ -137,6 +140,19 @@ def iunicode(debugger, command, result, internal_dict):
 		object_address = returnObject.GetOutput().strip()
 		object_address = object_address.split('=')[-1]
 		return iunicode(debugger, object_address, result, internal_dict)
+
+	## for argument/selector
+	## usage: iunicode "(char *)$x5"
+	## to do ...
+	elif first_parameter.startswith("(char *)$x"):
+		interpreter = lldb.debugger.GetCommandInterpreter()
+		returnObject = lldb.SBCommandReturnObject()
+		register = first_parameter
+		interpreter.HandleCommand('p %s' % register, returnObject) ## p (char *)$x5
+		address_content = returnObject.GetOutput().strip()  ## (char *) $496 = 0x00000001047cbf61 "\xffffffe4\xffffffb8\xffffff80"
+		address_content = address_content.split('=')[-1]
+		content = address_content.split(' ')[-1]
+		return iunicode(debugger, content, result, internal_dict)
 
 	return first_parameter
 		

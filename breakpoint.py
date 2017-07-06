@@ -49,20 +49,18 @@ def ibreak(debugger, command, result, internal_dict):
 # get the runtime address that fixed address plus ASLR
 def iraddress(debugger, command, result, internal_dict):
 	args = shlex.split(command)
-	if len(args) > 0:
+	if len(args) == 1:
 		address = args[0]
+	elif len(args) == 2:
+		module = args[0]
+		address = args[1]
 	else:
 		address = None
+		module = None
 
 	if not address:
 		print 'Failed: Please input the fixed address (i.e. address from IDA) .'
 		return
-
-	if len(args) > 1:
-		module = args[1]
-	else:
-		module = None
-
 
 	ASLR = iaslr(debugger, module, result, internal_dict)
 	returnObject = lldb.SBCommandReturnObject()
