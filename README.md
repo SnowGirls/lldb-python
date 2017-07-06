@@ -24,7 +24,7 @@ Also, you can put these command above into the file `~/.lldbinit`
 
 `(lldb) iaslr UIKit`
 
-`(lldb) ibreak 0x00000001234567 Foundation`		`// 0x00000001234567 Copied from IDA/Hopper`
+`(lldb) ibreak Foundation 0x00000001234567 `		`// 0x00000001234567 Copied from IDA/Hopper`
 
 `(lldb) iobjc_msgSend`
 
