@@ -26,7 +26,7 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			#thread.StepOver()
 			thread.StepInstruction(True)
 
-		elif any(re.findall(r'\sbl\s|\sblr\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\stbnz\s|\scmp\s', c, re.IGNORECASE)):
+		elif any(re.findall(r'\sbl\s|\sblr\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\stbnz\s|\stbz\s|\scmp\s', c, re.IGNORECASE)):
 			print 'objc_msgSend Hited!'
 			print disassemble
 			break

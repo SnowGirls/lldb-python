@@ -50,10 +50,11 @@ def ibreak(debugger, command, result, internal_dict):
 def iraddress(debugger, command, result, internal_dict):
 	args = shlex.split(command)
 	if len(args) == 1:
+		module = None
 		address = args[0]
 	elif len(args) == 2:
-		module = args[0]
 		address = args[1]
+		module = args[0]
 	else:
 		address = None
 		module = None
@@ -73,10 +74,15 @@ def iraddress(debugger, command, result, internal_dict):
 # get the fixed address that runtime address minus ASLR
 def ifaddress(debugger, command, result, internal_dict):
 	args = shlex.split(command)
-	if len(args) > 0:
+	if len(args) == 1:
+		module = None
 		address = args[0]
+	elif len(args) == 2:
+		address = args[1]
+		module = args[0]
 	else:
 		address = None
+		module = None
 
 	if not address:
 		gprs = get_GPRs(lldb.debugger.GetSelectedTarget().GetProcess().GetSelectedThread().GetSelectedFrame())
@@ -85,11 +91,6 @@ def ifaddress(debugger, command, result, internal_dict):
 				address = value.GetValue()
 				print 'pc : %s' % address
 				break
-
-	if len(args) > 1:
-		module = args[1]
-	else:
-		module = None
 
 	ASLR = iaslr(debugger, module, result, internal_dict)
 	returnObject = lldb.SBCommandReturnObject()
@@ -119,17 +120,17 @@ def __lldb_init_module(debugger, dict):
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ibreak'
-	helpText = "Set specified module breakpoint that plus ASLR. ibreak {address} [module]"
+	helpText = "Set specified module breakpoint that plus ASLR. ibreak [module] {address}"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'iraddress'
-	helpText = "Translate specified module runtime address that plus ASLR. iraddress {address} [module]"
+	helpText = "Translate specified module runtime address that plus ASLR. iraddress [module] {address}"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
 	command = 'ifaddress'
-	helpText = "Translate specified module fixed address that minus ASLR. ifaddress [address] [module]"
+	helpText = "Translate specified module fixed address that minus ASLR. ifaddress [module] [address]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
 	print 'The "%s" python command has been installed and is ready for use.' % command
 
