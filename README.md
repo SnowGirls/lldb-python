@@ -32,9 +32,9 @@ Also, you can put these commands above into the file `~/.lldbinit`
 (lldb) ibreak 0x00000001234567 `// 'bt' if your current selected frame's module is Foundation`
 
 (lldb) iraddress your.dylib 0x00000007654321 
-(lldb) iraddress 0x00000007654321 `// 'bt' if your current selected frame's module is your.dylib`
+(lldb) iraddress 0x00000007654321
 
-(lldb) ifaddress `// when no module or address specified, will print the result of 'pc'`
+(lldb) ifaddress
 
 (lldb) iunicode 0x1
 
@@ -43,35 +43,35 @@ Also, you can put these commands above into the file `~/.lldbinit`
 
 ### 3. Explanation
 
-##### iobjc_msgSend
+#### iobjc_msgSend
 
 Break before every `objc_msgSend` message. Or Stop when encounter:
 
 `b` or `bl` or `blr` or `cbz` or `cbnz` or `tbnz` or `tbz` or `cmp`
 
 
-##### iarguments
+#### iarguments
 print the arguments before `objc_msgSend` message.
 
-##### ievaluate
+#### ievaluate
 print the return value after `objc_msgSend` message.
 
-##### idisassemble
+#### idisassemble
 show dissassemble around `pc`.
 
-##### iunicode {...}
+#### iunicode {...}
 print the unicode (for example, Chinese) output.
 
-##### iaslr [module]
+#### iaslr [module]
 print ASLR of specified module.
 
-##### ibreak [module] {fixed_address}
+#### ibreak [module] {fixed_address}
 set a breakpoint from fixed address.
 
-##### iraddress [module] {fixed_address}
+#### iraddress [module] {fixed_address}
 print the runtime address.
 
-##### ifaddress [module] [runtime_address]
+#### ifaddress [module] [runtime_address]
 print the fixed address.
 
 ### 4. Tips
