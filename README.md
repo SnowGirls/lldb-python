@@ -28,8 +28,8 @@ Also, you can put these commands above into the file `~/.lldbinit`
 (lldb) iaslr
 (lldb) iaslr UIKit
 
-(lldb) ibreak Foundation 0x00000001234567 `// 0x00000001234567 Copied from IDA/Hopper`
-(lldb) ibreak 0x00000001234567 `// 'bt' if your current selected frame's module is Foundation`
+(lldb) ibreak Foundation 0x00000001234567   // 0x00000001234567 Copied from IDA/Hopper
+(lldb) ibreak 0x00000001234567  // 'bt' if your current selected frame's module is Foundation
 
 (lldb) iraddress your.dylib 0x00000007654321 
 (lldb) iraddress 0x00000007654321
@@ -74,7 +74,7 @@ print the runtime address.
 #### ifaddress [module] [runtime_address]
 print the fixed address.
 
-### 4. Tips
+## Tips
 
 Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
 
