@@ -43,6 +43,9 @@ Also, you can put these commands above into the file `~/.lldbinit`
 
 `(lldb) iunicode 0x1`
 
+
+### 3. Explanation
+
 #### iobjc_msgSend
 
 Break before every `objc_msgSend` message. Or Stop when encounter:
@@ -76,7 +79,7 @@ print the runtime address.
 #### ifaddress [module] [runtime_address]
 print the fixed address.
 
-### 3. Tips
+### 4. Tips
 
 Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
 
