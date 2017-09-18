@@ -1,8 +1,8 @@
 #!/usr/bin/python
 #coding:utf-8
 
-import commands
 import optparse
+import commands
 import shlex
 import lldb
 import re
@@ -36,40 +36,6 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			thread.StepInstruction(True)
 
 	iarguments(debugger, command, result, internal_dict)
-
-
-def idisassemble(debugger, command, result, internal_dict):
-	args = shlex.split(command)
-	count = 20
-	if len(args) > 0:
-		count = args[0]
-
-	interpreter = lldb.debugger.GetCommandInterpreter()
-	returnObject = lldb.SBCommandReturnObject()
-	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
-	output = returnObject.GetOutput();
-	error = returnObject.GetError()
-	print output + '' + error
-
-
-def ievaluate(debugger, command, result, internal_dict):
-	per_instruction_len = 0x4
-	show_instructions_len = 5
-
-	interpreter = lldb.debugger.GetCommandInterpreter()
-	returnObject = lldb.SBCommandReturnObject()
-	thread = debugger.GetSelectedTarget().GetProcess().GetSelectedThread()
-	thread.StepOver()
-	print 'Instruction Evaluated!'
-
-	interpreter.HandleCommand('dis -s `$pc-%d` -c %d' % (per_instruction_len, show_instructions_len), returnObject)
-	disassemble = returnObject.GetOutput()
-	print disassemble
-
-	interpreter.HandleCommand('po $x0', returnObject)
-	ret = returnObject.GetOutput().strip()
-	iunicode(debugger, '$x0', result, internal_dict)
-	print 'Instruction Return Value : %s' % ret
 
 
 def iarguments(debugger, command, result, internal_dict):
@@ -106,6 +72,40 @@ def iarguments(debugger, command, result, internal_dict):
 
 	objc_message += ']'
 	print objc_message
+
+
+def ievaluate(debugger, command, result, internal_dict):
+	per_instruction_len = 0x4
+	show_instructions_len = 5
+
+	interpreter = lldb.debugger.GetCommandInterpreter()
+	returnObject = lldb.SBCommandReturnObject()
+	thread = debugger.GetSelectedTarget().GetProcess().GetSelectedThread()
+	thread.StepOver()
+	print 'Instruction Evaluated!'
+
+	interpreter.HandleCommand('dis -s `$pc-%d` -c %d' % (per_instruction_len, show_instructions_len), returnObject)
+	disassemble = returnObject.GetOutput()
+	print disassemble
+
+	interpreter.HandleCommand('po $x0', returnObject)
+	ret = returnObject.GetOutput().strip()
+	iunicode(debugger, '$x0', result, internal_dict)
+	print 'Instruction Return Value : %s' % ret
+
+
+def idisassemble(debugger, command, result, internal_dict):
+	args = shlex.split(command)
+	count = 20
+	if len(args) > 0:
+		count = args[0]
+
+	interpreter = lldb.debugger.GetCommandInterpreter()
+	returnObject = lldb.SBCommandReturnObject()
+	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
+	output = returnObject.GetOutput();
+	error = returnObject.GetError()
+	print output + '' + error
 
 
 def iunicode(debugger, command, result, internal_dict):

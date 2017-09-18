@@ -1,25 +1,22 @@
 #!/usr/bin/python
+#coding:utf-8
 
-import commands
 import optparse
+import commands
 import shlex
 import lldb
 import re
 import os
 
 
-# if no get first target modules ASLR
+# get ASLR of specified module. i.e. iaslr UIKit
 def iaslr(debugger, command, result, internal_dict):
 	interpreter = debugger.GetCommandInterpreter()
-	target = debugger.GetSelectedTarget()
-	process = target.GetProcess()
-	thread = process.GetSelectedThread()
-	frame = thread.GetSelectedFrame()
-
 	returnObject = lldb.SBCommandReturnObject()
 	interpreter.HandleCommand('image list -o -f', returnObject)
 	output = returnObject.GetOutput();
 
+	#if no module specified in first argument, use the first/selected frame's module
 	if not command:
 		stream = lldb.SBStream()
 		lldb.debugger.GetSelectedTarget().GetProcess().GetSelectedThread().GetSelectedFrame().GetModule().GetDescription(stream)
