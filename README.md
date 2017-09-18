@@ -56,28 +56,28 @@ Skip `objc_release` and `objc_retainAutorelease` message.
 
 
 #### iarguments
-print the arguments before `objc_msgSend` message.
+    print the arguments before `objc_msgSend` message.
 
 #### ievaluate
-print the return value after `objc_msgSend` message.
+    print the return value after `objc_msgSend` message.
 
 #### idisassemble
-show dissassemble around `pc`.
+    show dissassemble around `pc`.
 
 #### iunicode {...}
-print the unicode (for example, Chinese) output.
+    print the unicode (for example, Chinese) output.
 
 #### iaslr [module]
-print ASLR of specified module.
+    print ASLR of specified module.
 
 #### ibreak [module] {fixed_address}
-set a breakpoint from fixed address.
+    set a breakpoint from fixed address.
 
 #### iraddress [module] {fixed_address}
-print the runtime address.
+    print the runtime address.
 
 #### ifaddress [module] [runtime_address]
-print the fixed address.
+    print the fixed address.
 
 ### 4. Tips
 
