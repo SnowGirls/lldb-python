@@ -36,7 +36,7 @@ Also, you can put these commands above into the file `~/.lldbinit`
 
 (lldb) ifaddress
 
-(lldb) iunicode 0x1
+(lldb) iunicode $x1
 
 ```
 
