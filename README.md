@@ -10,26 +10,71 @@ Start `Debugserver` and `LLDB`，attatch the process you want to debug.
 
 `command script import ~/Path/To/objc_msgSend.py`
 
-Also, you can put these command above into the file `~/.lldbinit` 
+Also, you can put these commands above into the file `~/.lldbinit` 
 
 
 ### 2. Commands example
-
 
 `(lldb) process interrupt`
 
 `(lldb) help`
 
+`(lldb) iobjc_msgSend`
+
+`(lldb) iarguments`
+
+`(lldb) ievaluate`
+
+`(lldb) idisassemble`
+
 `(lldb) iaslr`
 
 `(lldb) iaslr UIKit`
 
-`(lldb) ibreak Foundation 0x00000001234567 `		`// 0x00000001234567 Copied from IDA/Hopper`
+`(lldb) ibreak Foundation 0x00000001234567 ` `// 0x00000001234567 Copied from IDA/Hopper`
 
-`(lldb) iobjc_msgSend`
+`(lldb) ibreak 0x00000001234567 ` `// 'bt' if your current selected frame's module is Foundation`
 
-`(lldb) idisassemble`
+`(lldb) iraddress your.dylib 0x00000007654321 `
 
+`(lldb) iraddress 0x00000007654321 ` `// 'bt' if your current selected frame's module is your.dylib`
+
+`(lldb) ifaddress` `// when no module or address specified, will print the result of 'pc'`
+
+`(lldb) iunicode 0x1`
+
+#### iobjc_msgSend
+
+Break before every `objc_msgSend` message. Or Stop when encounter:
+
+`bl` or `blr` or `b` or `b\.` or `cbz` or `cbnz` or `tbnz` or `tbz` or `cmp`
+
+Skip `objc_release` and `objc_retainAutorelease` message.
+
+
+#### iarguments
+print the arguments before `objc_msgSend` message.
+
+#### ievaluate
+print the return value after `objc_msgSend` message.
+
+#### idisassemble
+show dissassemble around `pc`.
+
+#### iunicode {...}
+print the unicode (for example, Chinese) output.
+
+#### iaslr [module]
+print ASLR of specified module.
+
+#### ibreak [module] {fixed_address}
+set a breakpoint from fixed address.
+
+#### iraddress [module] {fixed_address}
+print the runtime address.
+
+#### ifaddress [module] [runtime_address]
+print the fixed address.
 
 ### 3. Tips
 
