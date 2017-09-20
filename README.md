@@ -40,6 +40,7 @@ Also, you can put these commands above into the file `~/.lldbinit`
 
 ```
 
+
 ## Tips
 
 Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
@@ -55,7 +56,7 @@ or, if only one command with prefix `io` in lldb environment, just issue:
 ## Explanation
 
 #### iobjc_msgSend
-<font size=1 color=black>Break before every `objc_msgSend` message, or stop when encounter:
+Break before every `objc_msgSend` message, or stop when encounter:
 
 `b` 、 `bl` 、 `blr` 、 `cbz` 、 `cbnz` 、 `tbnz` 、 `tbz` 、 `cmp`
 
