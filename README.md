@@ -29,7 +29,7 @@ Also, you can put these commands above into the file `~/.lldbinit`
 (lldb) iaslr UIKit
 
 (lldb) ibreak Foundation 0x00000001234567   // 0x00000001234567 Copied from IDA/Hopper
-(lldb) ibreak 0x00000001234567  // 'bt' if your current selected frame's module is Foundation
+(lldb) ibreak 0x00000001234567  // 'bt' selected frame's module is address owner (i.e Foundation)
 
 (lldb) iraddress your.dylib 0x00000007654321 
 (lldb) iraddress 0x00000007654321
@@ -40,14 +40,24 @@ Also, you can put these commands above into the file `~/.lldbinit`
 
 ```
 
+## Tips
 
-### 3. Explanation
+Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
+
+`(lldb) io + [Tab] + [Enter]`
+
+or, if only one command with prefix `io` in lldb environment, just issue:
+
+`(lldb) io + [Enter]`
+
+
+
+## Explanation
 
 #### iobjc_msgSend
+<font size=1 color=black>Break before every `objc_msgSend` message, or stop when encounter:
 
-Break before every `objc_msgSend` message. Or Stop when encounter:
-
-`b` or `bl` or `blr` or `cbz` or `cbnz` or `tbnz` or `tbz` or `cmp`
+`b` 、 `bl` 、 `blr` 、 `cbz` 、 `cbnz` 、 `tbnz` 、 `tbz` 、 `cmp`
 
 
 #### iarguments
@@ -74,13 +84,4 @@ print the runtime address.
 #### ifaddress [module] [runtime_address]
 print the fixed address.
 
-## Tips
-
-Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
-
-`(lldb) io + [Tab] + [Enter]`
-
-or, if only one command with prefix `io` in lldb environment, just issue:
-
-`(lldb) io + [Enter]`
 
