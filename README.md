@@ -57,18 +57,6 @@ ifaddress  |  [module]\|[runtime_address] | Print the fixed address.
 ```
 
 
-## Tips
-
-Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
-
-`(lldb) io + [Tab] + [Enter]`
-
-or, if only one command with prefix `io` in lldb environment, just issue:
-
-`(lldb) io + [Enter]`
-
-
-
 ## Explanation
 
 #### iobjc_msgSend
@@ -80,5 +68,18 @@ but skip `objc_release` and `objc_retainAutorelease` messages.
 
 #### iaslr、ibreak、iraddress、ifaddress
 Arguments `[module]` (aka `shared library` or `targe`t or `image` some how) is optional, when current `[module]` is the address owner. 
+
+
+
+## Tips
+
+Full enter the commad characters is not necessary , use the `Tab` keyboard key. Take `iobjc_msgSend` as an example:
+
+`(lldb) io + [Tab] + [Enter]`
+
+or, if only one command with prefix `io` in lldb environment, just issue:
+
+`(lldb) io + [Enter]`
+
 
 
