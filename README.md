@@ -20,7 +20,7 @@ iobjc_msgSend |          | Break before every `objc_msgSend` message.
 iarguments    |          | Print arguments of `objc_msgSend` message.
 ievaluate     |          | Print return value of `objc_msgSend` message.
 idisassemble  |          | Show dissassemble around pc.
-iunicode      | {register\|address} | Pring unicode (i.e. Chinese) output.
+iunicode      | {register\|address} | Print unicode (i.e. Chinese) output.
 iaslr  		  | [module] | Print ASLR of specified module.
 ibreak  	  | [module]\|{fixed_address} | Set a breakpoint with a fixed address.
 iraddress     | [module]\|{fixed_address} | Print the runtime/virtual address.
