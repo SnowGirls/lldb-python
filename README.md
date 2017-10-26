@@ -79,6 +79,6 @@ Will break before every `objc_msgSend` message, or stop when encounter:
 but skip `objc_release` and `objc_retainAutorelease` messages.
 
 #### iaslr、ibreak、iraddress、ifaddress
-Arguemt `[module]` (aka `shared library` or `targe`t or `image` some how) is optional, when current `[module]` is the address owner. 
+Arguments `[module]` (aka `shared library` or `targe`t or `image` some how) is optional, when current `[module]` is the address owner. 
 
 
