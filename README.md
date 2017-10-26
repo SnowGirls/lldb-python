@@ -26,7 +26,7 @@ ibreak  	  | [module]\|{fixed_address} | Set a breakpoint with a fixed address.
 iraddress     | [module]\|{fixed_address} | Print the runtime/virtual address.
 ifaddress  |  [module]\|[runtime_address] | Print the fixed address.
 
-### 3. Commands example
+### 3. Commands examples
 
 ```
 (lldb) process interrupt
