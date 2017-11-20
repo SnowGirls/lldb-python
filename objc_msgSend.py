@@ -123,12 +123,13 @@ def iunicode(debugger, command, result, internal_dict):
 		meta_class_address = first_parameter
 		## p (char *)class_getName((struct objc_class *)0x00000001047eb440)
 		interpreter.HandleCommand('p (char *)class_getName((void *)[%s class])' % meta_class_address, returnObject)
-		meta_class_name = returnObject.GetOutput().strip()
-		index_start = meta_class_name.find('"')
-		if index_start >= 0:
-			index_end = meta_class_name.find('"', index_start + 1)
-			unicode_string = meta_class_name[index_start : index_end + 1]
-			return iunicode(debugger, unicode_string, result, internal_dict)
+		if returnObject.GetOutput() != None:
+			meta_class_name = returnObject.GetOutput().strip()
+			index_start = meta_class_name.find('"')
+			if index_start >= 0:
+				index_end = meta_class_name.find('"', index_start + 1)
+				unicode_string = meta_class_name[index_start : index_end + 1]
+				return iunicode(debugger, unicode_string, result, internal_dict)
 
 	## for class
 	elif first_parameter.startswith("$x"):
