@@ -40,8 +40,7 @@ def ibreak(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('br set -a %s' % address, returnObject)
 	output = returnObject.GetOutput();
-	error = returnObject.GetError()
-	print output + '' + error
+	print output
 
 # get the runtime address that fixed address plus ASLR
 def iraddress(debugger, command, result, internal_dict):
@@ -64,8 +63,7 @@ def iraddress(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('p/x %s+%s' % (address, ASLR), returnObject)
 	output = returnObject.GetOutput()
-	error = returnObject.GetError()
-	print output + '' + error
+	print 'Runtimer address: ' + output
 	return output.split(' ')[-1]
 
 # get the fixed address that runtime address minus ASLR
@@ -92,9 +90,8 @@ def ifaddress(debugger, command, result, internal_dict):
 	ASLR = iaslr(debugger, module, result, internal_dict)
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('p/x %s-%s' % (address, ASLR), returnObject)
-	output = returnObject.GetOutput();
-	error = returnObject.GetError()
-	print output + '' + error
+	output = returnObject.GetOutput()
+	print 'Fix address: ' + output
 	return output.split(' ')[-1]
 
 

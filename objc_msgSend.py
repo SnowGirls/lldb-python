@@ -104,8 +104,7 @@ def idisassemble(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
 	output = returnObject.GetOutput();
-	error = returnObject.GetError()
-	print output + '' + error
+	print output
 
 
 def iunicode(debugger, command, result, internal_dict):
