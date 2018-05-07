@@ -6,9 +6,9 @@ Start `debugserver` and `LLDB`，attatch the process you want to debug.
 
 ### 1. Import the scripts
 
-`command script import ~/Path/To/breakpoint.py`
+`command script import ~/Path/To/Your/breakpoint.py`
 
-`command script import ~/Path/To/objc_msgSend.py`
+`command script import ~/Path/To/Your/objc_msgSend.py`
 
 Also, you can put these commands above into the file `~/.lldbinit` 
 
@@ -42,14 +42,15 @@ ifaddress  |  [module]\|[runtime_address] | Print the fixed address.
 (lldb) iaslr UIKit
 
 (lldb) ibreak Foundation 0x00000001234567   // 0x00000001234567 is Copied from IDA/Hopper
-(lldb) ibreak 0x00000001234567  // use 'bt' to check selected frame's module is address owner (i.e Foundation)
+(lldb) ibreak 0x00000001234567	  // (for convenience, share library omitted)
+// Note, use 'bt' to check selected/top frame's module(target module/image/share library/) is this address's owner.(Here is take 'Foundation' for example)
 
 (lldb) iraddress your.dylib 0x00000007654321 
-(lldb) iraddress 0x00000007654321
+(lldb) iraddress 0x00000007654321	// (for convenience, share library omitted)
 
 (lldb) ifaddress your.dylib 0x00000009876543
-(lldb) ifaddress 0x00000009876543
-(lldb) ifaddress
+(lldb) ifaddress 0x00000009876543	// (for convenience, share library omitted)
+(lldb) ifaddress 					// show current 'pc' fixed address in IDA/Hopper
 
 (lldb) iunicode $x1
 (lldb) iunicode 0x0000000abc123
@@ -80,6 +81,3 @@ Full enter the commad characters is not necessary , use the `Tab` keyboard key. 
 or, if only one command with prefix `io` in lldb environment, just issue:
 
 `(lldb) io + [Enter]`
-
-
-
