@@ -43,7 +43,7 @@ ifaddress  |  [module]\|[runtime_address] | Print the fixed address.
 
 (lldb) ibreak Foundation 0x00000001234567   // 0x00000001234567 is Copied from IDA/Hopper
 (lldb) ibreak 0x00000001234567	  // (for convenience, share library omitted)
-// Note, use 'bt' to check selected/top frame's module(target module/image/share library/) is this address's owner.(Here is take 'Foundation' for example)
+// Note, use 'bt' to check selected/top frame's module(target module/image/share library/) is this address's owner.(Take 'Foundation' for an example here)
 
 (lldb) iraddress your.dylib 0x00000007654321 
 (lldb) iraddress 0x00000007654321	// (for convenience, share library omitted)
