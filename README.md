@@ -50,7 +50,7 @@ ifaddress  |  [module]\|[runtime_address] | Print the fixed address.
 
 (lldb) ifaddress your.dylib 0x00000009876543
 (lldb) ifaddress 0x00000009876543	// (for convenience, share library omitted)
-(lldb) ifaddress 					// show current 'pc' fixed address in IDA/Hopper
+(lldb) ifaddress	// show current 'pc' fixed address corresponding in IDA/Hopper
 
 (lldb) iunicode $x1
 (lldb) iunicode 0x0000000abc123
