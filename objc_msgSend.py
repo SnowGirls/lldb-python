@@ -2,7 +2,6 @@
 #coding:utf-8
 
 import optparse
-import commands
 import shlex
 import lldb
 import re
@@ -27,8 +26,8 @@ def iobjc_msgSend(debugger, command, result, internal_dict):
 			thread.StepInstruction(True)
 
 		elif any(re.findall(r'\sbl\s|\sblr\s|\sb\s\s|\sb\.|\scbz\s|\scbnz\s|\stbnz\s|\stbz\s|\scmp\s', c, re.IGNORECASE)):
-			print 'objc_msgSend Hited!'
-			print disassemble
+			print('objc_msgSend Hited!')
+			print(disassemble)
 			break
 
 		else:
@@ -46,7 +45,7 @@ def iarguments(debugger, command, result, internal_dict):
 	interpreter.HandleCommand('p (char *)$x1', returnObject)
 	method_name = returnObject.GetOutput().strip()
 
-	print '[%s %s]' % (object_name, method_name)
+	print('[%s %s]' % (object_name, method_name))
 
 	objc_message = '['
 	objc_message += '%s ' % iunicode(debugger, '$x0', result, internal_dict)
@@ -71,7 +70,7 @@ def iarguments(debugger, command, result, internal_dict):
 	
 
 	objc_message += ']'
-	print objc_message
+	print(objc_message)
 
 
 def ievaluate(debugger, command, result, internal_dict):
@@ -82,16 +81,16 @@ def ievaluate(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	thread = debugger.GetSelectedTarget().GetProcess().GetSelectedThread()
 	thread.StepOver()
-	print 'Instruction Evaluated!'
+	print('Instruction Evaluated!')
 
 	interpreter.HandleCommand('dis -s `$pc-%d` -c %d' % (per_instruction_len, show_instructions_len), returnObject)
 	disassemble = returnObject.GetOutput()
-	print disassemble
+	print(disassemble)
 
 	interpreter.HandleCommand('po $x0', returnObject)
 	ret = returnObject.GetOutput().strip()
 	iunicode(debugger, '$x0', result, internal_dict)
-	print 'Instruction Return Value : %s' % ret
+	print('Instruction Return Value : %s' % ret)
 
 
 def idisassemble(debugger, command, result, internal_dict):
@@ -104,7 +103,7 @@ def idisassemble(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	interpreter.HandleCommand('dis -s `$pc-0x8` -c %d' % (count), returnObject)
 	output = returnObject.GetOutput();
-	print output
+	print(output)
 
 
 def iunicode(debugger, command, result, internal_dict):
@@ -113,7 +112,7 @@ def iunicode(debugger, command, result, internal_dict):
 	if r"\xffffff" in first_parameter:		# unicode string
 		unicode_string = first_parameter.replace("ffffff", "")
 		unicode_escaped = unicode_string.decode('string-escape')
-		print unicode_string + ' -> ' + unicode_escaped
+		print(unicode_string + ' -> ' + unicode_escaped)
 		return unicode_escaped
 
 	## for address
@@ -166,25 +165,25 @@ def __lldb_init_module(debugger, dict):
 	command = 'iobjc_msgSend'
 	helpText = "Break at / Step to next objc_msgSend."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'idisassemble'
 	helpText = "Print current disassemble instructions."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'ievaluate'
 	helpText = "Evaluate current instruction."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'iarguments'
 	helpText = "Print current objc_msgSend arguments."
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'iunicode'
 	helpText = "Print the unicode encoding string. iunicode address/string"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(filename, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 

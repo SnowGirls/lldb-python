@@ -2,7 +2,6 @@
 #coding:utf-8
 
 import optparse
-import commands
 import shlex
 import lldb
 import re
@@ -29,7 +28,7 @@ def iaslr(debugger, command, result, internal_dict):
 	m = p.search(output)
 	aslr = m.group(1)
 
-	print '%s ASLR: %s' % (module, aslr)
+	print('%s ASLR: %s' % (module, aslr))
 
 	return aslr
 
@@ -40,7 +39,7 @@ def ibreak(debugger, command, result, internal_dict):
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('br set -a %s' % address, returnObject)
 	output = returnObject.GetOutput();
-	print output
+	print(output)
 
 # get the runtime address that fixed address plus ASLR
 def iraddress(debugger, command, result, internal_dict):
@@ -56,14 +55,14 @@ def iraddress(debugger, command, result, internal_dict):
 		module = None
 
 	if not address:
-		print 'Failed: Please input the fixed address (i.e. address from IDA) .'
+		print('Failed: Please input the fixed address (i.e. address from IDA) .')
 		return
 
 	ASLR = iaslr(debugger, module, result, internal_dict)
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('p/x %s+%s' % (address, ASLR), returnObject)
 	output = returnObject.GetOutput()
-	print 'Runtime address: ' + output
+	print('Runtime address: ' + output)
 	return output.split(' ')[-1]
 
 # get the fixed address that runtime address minus ASLR
@@ -84,14 +83,14 @@ def ifaddress(debugger, command, result, internal_dict):
 		for value in gprs:
 			if 'pc' == value.GetName():
 				address = value.GetValue()
-				print 'pc : %s' % address
+				print('pc : %s' % address)
 				break
 
 	ASLR = iaslr(debugger, module, result, internal_dict)
 	returnObject = lldb.SBCommandReturnObject()
 	debugger.GetCommandInterpreter().HandleCommand('p/x %s-%s' % (address, ASLR), returnObject)
 	output = returnObject.GetOutput()
-	print 'Fixed address: ' + output
+	print('Fixed address: ' + output)
 	return output.split(' ')[-1]
 
 
@@ -111,21 +110,21 @@ def __lldb_init_module(debugger, dict):
 	command = 'iaslr'
 	helpText = "Print specified module's ASLR. iaslr [module]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'ibreak'
 	helpText = "Set specified module breakpoint that plus ASLR. ibreak [module] {address}"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'iraddress'
 	helpText = "Translate specified module runtime address that plus ASLR. iraddress [module] {address}"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 	command = 'ifaddress'
 	helpText = "Translate specified module fixed address that minus ASLR. ifaddress [module] [address]"
 	debugger.HandleCommand('command script add --help "{help}" --function {function} {name}'.format(help=helpText, function='%s.%s'%(__name__, command), name=command))
-	print 'The "%s" python command has been installed and is ready for use.' % command
+	print('The "%s" python command has been installed and is ready for use.' % command)
 
 
